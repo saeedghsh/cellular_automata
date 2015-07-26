@@ -18,7 +18,7 @@
 
 import sys
 from PySide import QtGui
-sys.path.append('gui/') # for import isagt in MWL
+sys.path.append('gui/') # for import GOL in MWL
 sys.path.append('lib/')
 import myWindowLib as MWL
 reload (MWL)
@@ -31,6 +31,3 @@ mySW = MWL.MainWindow()
 mySW.show()
 app.exec_()
 # sys.exit(app.exec_())
-
-
-

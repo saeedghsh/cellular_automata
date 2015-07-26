@@ -47,7 +47,7 @@ class MyMplCanvas(FigureCanvas):
         FigureCanvas.setSizePolicy(self, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         FigureCanvas.updateGeometry(self)
 
-        # self.ani = animation.FuncAnimation(fig, updateImage, data_gen, interval=100)
+
 
     def plotImage(self,image):
         # self.axes.cla()

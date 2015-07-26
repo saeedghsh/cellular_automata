@@ -1,3 +1,21 @@
+# "
+# Copyright (C) 2015 Saeed Gholami Shahbandi. All rights reserved.
+
+# This program is free software: you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public License
+# as published by the Free Software Foundation, either version 3 of
+# the License, or (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# Lesser General Public License for more details.
+
+# You should have received a copy of the GNU Lesser General Public
+# License along with this program. If not, see
+# <http://www.gnu.org/licenses/>
+# "
+
 import numpy as np
 
 ########################################
@@ -26,7 +44,7 @@ class CellularAutomata:
                 c = np.random.random_integers(self.size[0]-1)
                 r = np.random.random_integers(self.size[1]-1)
                 self.grid[c][r] = 1
-        elif mode == 'glider':
+        elif mode == 'template':
             pass
         
 
@@ -63,53 +81,26 @@ class CellularAutomata:
         elif self.cellType == 'hexagon': pass #TODO
         elif self.cellType == 'triangle': pass #TODO
 
-    def conway(self, born=3, stayAlive=[2,3]):
+    def conway(self, born=[3], stayAlive=[2,3]):
         # TODO: improve speed
         for r in range(self.size[0]):
             for c in range(self.size[1]):
-                if (self.grid[r,c] == 0) and (self.neighborSum[r,c]==born):
-                    self.grid[r,c]=1.
+                if (self.grid[r,c] == 0) and (self.neighborSum[r,c] in born):
+                    self.grid[r,c] = 1.
                 elif (self.grid[r,c] == 1) and (self.neighborSum[r,c] in stayAlive):
                     pass
                 else:
-                    self.grid[r,c]=0.
+                    self.grid[r,c] = 0.
 
     def iterate(self):
         self.calcNeighborSum()
-        if self.cellType == 'square':
-            self.rule()
-        elif self.cellType == 'hexagon': pass #TODO
-        elif self.cellType == 'triangle': pass #TODO
-
-
-
-
+        self.rule()
+        return self.grid
 
 
 
 # ###########################################
 # myAut = CellularAutomata(gridSize=[200,200])
 # myAut.giveBirth()
-
-
-# import matplotlib.pyplot as plt
-# rows,cols = 2,2
-# fig = plt.figure(figsize=(cols*6,rows*6))
-# axes = [plt.subplot2grid((rows, cols), (r, c), rowspan=1, colspan=1, axisbg = 'w')
-#         for c in range(cols) for r in range(rows)]
-
-# img = myAut.grid
-# axes[0].imshow(img, cmap='gray', origin='lower')
-# for i in range(10):    myAut.iterate()
-# img = myAut.grid
-# axes[1].imshow(img, cmap='gray', origin='lower')
-# for i in range(10):    myAut.iterate()
-# img = myAut.grid
-# axes[2].imshow(img, cmap='gray', origin='lower')
-# for i in range(10):    myAut.iterate()
-# img = myAut.grid
-# axes[3].imshow(img, cmap='gray', origin='lower')
-
-# plt.show()
 
 

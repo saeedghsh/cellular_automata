@@ -17,6 +17,7 @@
 # "
 
 import sys, os, platform, time
+import threading
 
 import numpy as np
 import PySide
@@ -28,6 +29,12 @@ import myCanvasLib as MCL
 import GameOfLifeLib as GOLib
 reload(MCL)
 reload(GOLib)
+
+
+
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+
 
 class MainWindow(QtGui.QMainWindow, GOL.Ui_MainWindow):
     def __init__(self, parent=None):
@@ -41,63 +48,55 @@ class MainWindow(QtGui.QMainWindow, GOL.Ui_MainWindow):
         self.myCanvas = MCL.MyMplCanvas(self.main_widget)#, width=5, height=4, dpi=100)
         self.layout.addWidget(self.myCanvas)
         self.main_widget.setFocus()
-        # self.setCentralWidget(self.main_widget)
         self.myCanvas.mpl_connect('button_press_event', self.mouseClick)
+
+
         
         ## Push buttons
         self.ui.changeSizeButton.clicked.connect(self.initiateCA)
         self.ui.initAliveButton.clicked.connect(self.initiateCA)
-        self.ui.startButton.clicked.connect(self.playIteration)
-        # self.ui.stopButton.clicked.connect(self.xxx)
-        # self.ui.resetButton.clicked.connect(self.xxx)
-
-        self.play = False
+        self.ui.startButton.clicked.connect(self.start)
+        self.ui.stopButton.clicked.connect(self.stop)
 
         self.initiateCA()
         
-
-
+        # self.thread = threading.Thread(name='playIteration', target=self.playIteration)
+        # self.thread.setDaemon(True)
+        # self.thread.start()
+       
+            
     def initiateCA(self):
-        self.play = False
         gridSize = int(self.ui.sizeValue.toPlainText())
-        self.cellAut = GOLib.CellularAutomata([gridSize,gridSize],
-                                              rule=self.ui.ruleScroll.currentText(),
-                                              cellType=self.ui.cellTypeScroll.currentText())        
-        self.giveBirth()
-        self.myCanvas.plotImage(self.cellAut.grid)
-
-    def giveBirth(self):
-        self.play = False
+        rule = self.ui.ruleScroll.currentText()
+        cellType =  self.ui.cellTypeScroll.currentText()
+        self.cellAut = GOLib.CellularAutomata([gridSize,gridSize], rule=rule, cellType=cellType)
         self.cellAut.giveBirth(percent=float(self.ui.initAlive.toPlainText()))
+        self.myCanvas.plotImage(self.cellAut.grid)
+       
 
-
-    def playIteration(self):
-
-        # if self.ui.startButton => True
-        # if self.ui.stopButton => False
-        # if self.ui.resetButton => False
+    def start(self):
+        print 'hello'
         self.play = True
-        
-        for i in range(10): # while self.play:
-            self.cellAut.iterate()
-            self.myCanvas.axes.cla()
-            self.myCanvas.plotImage(self.cellAut.grid)
-            time.sleep(1/self.ui.speedSlider.sliderPosition())
+        self.ani = animation.FuncAnimation(self.myCanvas.figure,
+                                           self.myCanvas.updateImage,
+                                           self.iterate,
+                                           interval= 1/self.ui.speedSlider.sliderPosition())
 
-    def mouseClick(self, event):
-        # print 'button=%d, x=%d, y=%d, xdata=%f, ydata=%f'%(
-        #     event.button, event.x, event.y, event.xdata, event.ydata)
 
-        # self.temp.append([event.xdata, event.ydata])
-        
-        # if event.button == 2:
-        #     print 'I could wrap up everything here, right?'
+    def stop(self):
+        print 'goodbye'
+        self.play = False
 
-        pass
-        
+
+    def iterate(self):
+        while self.play: yield self.cellAut.iterate()
 
 
     ###################################################################
+    def mouseClick(self, event):
+        # self.temp.append([event.xdata, event.ydata])
+        pass
+
     def about(self):
         QtGui.QMessageBox.about(self, "About Game of Life",
                                 """<b>Version</b> %s
