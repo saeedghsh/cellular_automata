@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'GOL.ui'
 #
-# Created: Fri Jul 24 08:18:41 2015
-#      by: pyside-uic 0.2.13 running on PySide 1.1.0
+# Created: Wed Jun 28 20:41:27 2017
+#      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -66,10 +66,11 @@ class Ui_MainWindow(object):
         self.groupBox_4.setGeometry(QtCore.QRect(50, 430, 171, 51))
         self.groupBox_4.setObjectName("groupBox_4")
         self.speedSlider = QtGui.QSlider(self.groupBox_4)
-        self.speedSlider.setGeometry(QtCore.QRect(0, 20, 171, 29))
-        self.speedSlider.setMinimum(1)
-        self.speedSlider.setMaximum(100)
-        self.speedSlider.setProperty("value", 100)
+        self.speedSlider.setGeometry(QtCore.QRect(0, 10, 171, 29))
+        self.speedSlider.setMinimum(10)
+        self.speedSlider.setMaximum(1000)
+        self.speedSlider.setSingleStep(10)
+        self.speedSlider.setProperty("value", 10)
         self.speedSlider.setOrientation(QtCore.Qt.Horizontal)
         self.speedSlider.setObjectName("speedSlider")
         self.groupBox_5 = QtGui.QGroupBox(self.centralwidget)
@@ -85,9 +86,15 @@ class Ui_MainWindow(object):
         self.resetButton = QtGui.QPushButton(self.groupBox_5)
         self.resetButton.setGeometry(QtCore.QRect(10, 40, 161, 27))
         self.resetButton.setObjectName("resetButton")
+        self.label = QtGui.QLabel(self.centralwidget)
+        self.label.setGeometry(QtCore.QRect(180, 470, 41, 16))
+        self.label.setObjectName("label")
+        self.label_2 = QtGui.QLabel(self.centralwidget)
+        self.label_2.setGeometry(QtCore.QRect(50, 470, 41, 16))
+        self.label_2.setObjectName("label_2")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 940, 25))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 940, 22))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtGui.QStatusBar(MainWindow)
@@ -121,8 +128,10 @@ class Ui_MainWindow(object):
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">200</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.groupBox_3.setTitle(QtGui.QApplication.translate("MainWindow", "Rules:", None, QtGui.QApplication.UnicodeUTF8))
         self.ruleScroll.setItemText(0, QtGui.QApplication.translate("MainWindow", "conway", None, QtGui.QApplication.UnicodeUTF8))
-        self.groupBox_4.setTitle(QtGui.QApplication.translate("MainWindow", "Speed:", None, QtGui.QApplication.UnicodeUTF8))
+        self.groupBox_4.setTitle(QtGui.QApplication.translate("MainWindow", "Step Interval:", None, QtGui.QApplication.UnicodeUTF8))
         self.stopButton.setText(QtGui.QApplication.translate("MainWindow", "Stop", None, QtGui.QApplication.UnicodeUTF8))
         self.startButton.setText(QtGui.QApplication.translate("MainWindow", "Start", None, QtGui.QApplication.UnicodeUTF8))
         self.resetButton.setText(QtGui.QApplication.translate("MainWindow", "Reset", None, QtGui.QApplication.UnicodeUTF8))
+        self.label.setText(QtGui.QApplication.translate("MainWindow", "1000 ms", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_2.setText(QtGui.QApplication.translate("MainWindow", "10 ms", None, QtGui.QApplication.UnicodeUTF8))
 

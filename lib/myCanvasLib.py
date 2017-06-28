@@ -29,7 +29,7 @@ from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-plt.ion()
+# plt.ion()
 
 class MyMplCanvas(FigureCanvas):
     """
@@ -37,24 +37,24 @@ class MyMplCanvas(FigureCanvas):
     But I connected this to graphicsView in the ui
     """
     def __init__(self, parent=None, width=5, height=4, dpi=100):
-        fig = Figure()#figsize=(width, height), dpi=dpi)
-        self.axes = fig.add_subplot(111)
+        self.fig = Figure()#figsize=(width, height), dpi=dpi)
+        self.axes = self.fig.add_subplot(111)
         self.axes.axis('off')        
-        self.axes.hold(False)
         
-        FigureCanvas.__init__(self, fig)
+        FigureCanvas.__init__(self, self.fig)
         self.setParent(parent)
         FigureCanvas.setSizePolicy(self, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         FigureCanvas.updateGeometry(self)
+        plt.show()
 
         # self.ani = animation.FuncAnimation(fig, updateImage, data_gen, interval=100)
 
-    def plotImage(self,image):
+    def plotImage(self, image):
         # self.axes.cla()
-        self.img = self.axes.imshow(image,interpolation='nearest', cmap='gray',animated=True)
-        self.draw()    
-    
-    def updateImage(self, image):
-        self.img.set_data(image)
+        self.img = self.axes.imshow(image, interpolation='nearest', cmap='gray')#, animated=True)
         self.draw()
-        return self.img
+    
+    # def updateImage(self, image):
+    #     self.img.set_data(image)
+    #     self.draw()
+    #     # return self.img

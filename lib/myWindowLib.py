@@ -1,43 +1,44 @@
-# "
-# Copyright (C) 2015 Saeed Gholami Shahbandi. All rights reserved.
+'''
+Copyright (C) 2015 Saeed Gholami Shahbandi. All rights reserved.
 
-# This program is free software: you can redistribute it and/or
-# modify it under the terms of the GNU Lesser General Public License
-# as published by the Free Software Foundation, either version 3 of
-# the License, or (at your option) any later version.
+This program is free software: you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public License
+as published by the Free Software Foundation, either version 3 of
+the License, or (at your option) any later version.
 
-# This program is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-# Lesser General Public License for more details.
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+Lesser General Public License for more details.
 
-# You should have received a copy of the GNU Lesser General Public
-# License along with this program. If not, see
-# <http://www.gnu.org/licenses/>
-# "
+You should have received a copy of the GNU Lesser General Public
+License along with this program. If not, see
+<http://www.gnu.org/licenses/>
+'''
 
 import sys, os, platform, time
-import threading
+from functools import partial
 
 import numpy as np
 import PySide
 from PySide import QtCore, QtGui
 
-sys.path.append('../gui/')
-import GOL # GOL.Ui_MainWindow
-import myCanvasLib as MCL
-import GameOfLifeLib as GOLib
-reload(MCL)
-reload(GOLib)
-
-
-
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
+import GOL
+import myCanvasLib as MCL
+import GameOfLifeLib as GOLib
 
+
+################################################################################
+################################################################################
+################################################################################
 class MainWindow(QtGui.QMainWindow, GOL.Ui_MainWindow):
+    '''
+    '''
     def __init__(self, parent=None):
+        ''''''
         super(MainWindow, self).__init__(parent)
         self.ui = GOL.Ui_MainWindow()
         self.ui.setupUi(self)
@@ -49,61 +50,90 @@ class MainWindow(QtGui.QMainWindow, GOL.Ui_MainWindow):
         self.layout.addWidget(self.myCanvas)
         self.main_widget.setFocus()
         self.myCanvas.mpl_connect('button_press_event', self.mouseClick)
-
-
         
         ## Push buttons
-        self.ui.changeSizeButton.clicked.connect(self.initiateCA)
-        self.ui.initAliveButton.clicked.connect(self.initiateCA)
+        self.ui.changeSizeButton.clicked.connect(self.initiate)
+        self.ui.initAliveButton.clicked.connect(self.initiate)
+        self.ui.resetButton.clicked.connect(self.initiate)
         self.ui.startButton.clicked.connect(self.start)
         self.ui.stopButton.clicked.connect(self.stop)
 
-        self.initiateCA()
+        self.animation = None        
+        self.initiate()
         
-        # self.thread = threading.Thread(name='playIteration', target=self.playIteration)
-        # self.thread.setDaemon(True)
-        # self.thread.start()
-       
-            
-    def initiateCA(self):
+    ########################################
+    def initiate(self):
+        ''''''
+        if type(self.animation) == animation.FuncAnimation:
+            # if self.animation already exists, it should be stoped
+            try:
+                # in case animation is already stoped and cannot remove call_back
+                self.animation._stop()
+            except:
+                pass
+
+        self.play = False
+
         gridSize = int(self.ui.sizeValue.toPlainText())
         rule = self.ui.ruleScroll.currentText()
         cellType =  self.ui.cellTypeScroll.currentText()
+
         self.cellAut = GOLib.CellularAutomata([gridSize,gridSize], rule=rule, cellType=cellType)
         self.cellAut.giveBirth(percent=float(self.ui.initAlive.toPlainText()))
         self.myCanvas.plotImage(self.cellAut.grid)
-       
 
+    ########################################
     def start(self):
-        print 'hello'
+        ''''''
         self.play = True
-        self.ani = animation.FuncAnimation(self.myCanvas.figure,
-                                           self.myCanvas.updateImage,
-                                           self.iterate,
-                                           interval= 1/self.ui.speedSlider.sliderPosition())
+        interval = self.ui.speedSlider.sliderPosition()
+        self.animation = animation.FuncAnimation(self.myCanvas.fig,
+                                                 self.update_plot,
+                                                 self.generate_plot,
+                                                 blit=True,
+                                                 interval=interval)
 
-
+    ########################################
     def stop(self):
-        print 'goodbye'
+        ''''''
         self.play = False
 
+        if type(self.animation) == animation.FuncAnimation:
+            # only if self.animation already exists
+            try:
+                # in case animation is already stoped and cannot remove call_back
+                self.animation._stop()
+            except:
+                pass
 
-    def iterate(self):
-        while self.play: yield self.cellAut.iterate()
+    ########################################
+    def generate_plot(self):
+        ''''''
+        if self.play:
+            self.cellAut.iterate()
+            yield self.cellAut.grid
 
+    ########################################
+    def update_plot(self, data):
+        ''''''
+        self.myCanvas.img.set_data(data)
+        return self.myCanvas.img,
 
     ###################################################################
     def mouseClick(self, event):
-        # self.temp.append([event.xdata, event.ydata])
+        ''''''
+        # print([event.xdata, event.ydata])
+        # self.play ^= True
         pass
 
+    ########################################
     def about(self):
-        QtGui.QMessageBox.about(self, "About Game of Life",
-                                """<b>Version</b> %s
-                                <p>Copyright &copy; 2015 Saeed Gholami Shahbandi.
-                                All rights reserved in accordance with
-                                BSD 3-clause - NO WARRANTIES!
-                                <p>This GUI is a simple implementation of Game of Life.
-                                <p>Python %s - PySide version %s - Qt version %s on %s""" % (__version__,
-                                                                                             platform.python_version(), PySide.__version__, QtCore.__version__,
-                                                                                             platform.system()))
+        ''''''
+        msg = 'Version</b> {:s}, Python {:s}, PySide version {:s}, Qt version {:s} on {:s}'
+        QtGui.QMessageBox.about(self,
+                                'About Game of Life',
+                                msg.format(__version__,
+                                           platform.python_version(),
+                                           PySide.__version__,
+                                           QtCore.__version__, platform.system()))
+        

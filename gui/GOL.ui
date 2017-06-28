@@ -213,25 +213,28 @@ p, li { white-space: pre-wrap; }
      </rect>
     </property>
     <property name="title">
-     <string>Speed:</string>
+     <string>Step Interval:</string>
     </property>
     <widget class="QSlider" name="speedSlider">
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>20</y>
+       <y>10</y>
        <width>171</width>
        <height>29</height>
       </rect>
      </property>
      <property name="minimum">
-      <number>1</number>
+      <number>10</number>
      </property>
      <property name="maximum">
-      <number>100</number>
+      <number>1000</number>
+     </property>
+     <property name="singleStep">
+      <number>10</number>
      </property>
      <property name="value">
-      <number>100</number>
+      <number>10</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -290,6 +293,32 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>470</y>
+      <width>41</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>1000 ms</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>470</y>
+      <width>41</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>10 ms</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -297,7 +326,7 @@ p, li { white-space: pre-wrap; }
      <x>0</x>
      <y>0</y>
      <width>940</width>
-     <height>25</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>
