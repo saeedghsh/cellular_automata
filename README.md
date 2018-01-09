@@ -13,13 +13,6 @@ $ pyth lib/GameOfLifeLib.py # to run simple animation (stop/start with mouse cli
 
 ![GUI snapshot](https://github.com/saeedghsh/GameOfLife/blob/master/gui/GUI.png)
 
-License
--------
-Distributed with a GNU GENERAL PUBLIC LICENSE; see LICENSE.
-```
-Copyright (C) Saeed Gholami Shahbandi <saeed.gh.sh@gmail.com>
-```
-
 Laundry List
 ------------
 - [ ] include other rules
@@ -29,3 +22,10 @@ Laundry List
 - [ ] smoothlife? (continuious life value instead of binary)
 - [x] fix the animation bug
 - [x] fix the horrible conway implementation
+
+License
+-------
+Distributed with a GNU GENERAL PUBLIC LICENSE; see [LICENSE](https://github.com/saeedghsh/GameOfLife/blob/master/LICENSE).
+```
+Copyright (C) Saeed Gholami Shahbandi
+```
