@@ -1,7 +1,7 @@
 Game of Life
 ------------
-A simple Gampe of Life implementation.
-A Sanbox for playing with Qt GUI and ```matplotlib.animation```.
+A simple implementation of [Gampe of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life).
+A Sanbox for playing with Qt GUI and `matplotlib.animation`.
 
 ```shell
 $ git clone https://github.com/saeedghsh/GameOfLife.git
@@ -15,11 +15,16 @@ $ pyth lib/GameOfLifeLib.py # to run simple animation (stop/start with mouse cli
 
 Laundry List
 ------------
+- [ ] add `requirement.txt`
+- [ ] include steps of setting up and using Qt GUI
+
 - [ ] include other rules
 - [ ] implement other grid types
 - [ ] include template-based initiation (e.g. glider)
+
 - [ ] smoothlife? (continuious grid instead of discretized)
 - [ ] smoothlife? (continuious life value instead of binary)
+
 - [x] fix the animation bug
 - [x] fix the horrible conway implementation
 
